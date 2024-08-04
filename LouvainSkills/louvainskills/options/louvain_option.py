@@ -55,12 +55,12 @@ class LouvainOption(BaseOption):
             return False
         # Else, test whether this state is in the initiation set.
         else:
-            # return state in self.initiation_set
             # Pre-computing initiation sets saves a lot of time, but I'm reverting to the code below for now.
             # It's more expensive, but I need to find a nice way to handle both directed edges and the possibility
             # for transfer between tasks (a terminal state in one task may not be a terminal state for another,
             # causing issues when it comes to computing paths etc.).
-            return self.stg.nodes[state][f"cluster-{self.hierarchy_level}"] == self.source_cluster
+            # return self.stg.nodes[state][f"cluster-{self.hierarchy_level}"] == self.source_cluster
+            return state in self.initiation_set
 
     def policy(self, state, test=False):
         # Return highest-valued option from the Q-table, breaking ties randomly.
