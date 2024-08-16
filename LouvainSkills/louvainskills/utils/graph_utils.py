@@ -2,6 +2,7 @@ import networkx as nx
 import igraph as ig
 
 from typing import List, Hashable
+from collections import defaultdict
 
 
 def convert_nx_to_ig(stg):
@@ -38,6 +39,54 @@ def get_all_neighbours(graph: nx.Graph, node: Hashable) -> List[Hashable]:
         List[Hashable]: A list of IDs of nodes either preceding or succeding the given node on the graph.
     """
     return list(set(list(graph.successors(node)) + list(graph.predecessors(node))))
+
+
+def aggregate_graph_from_node_attribute(graph: nx.DiGraph, attribute_name: str, directed: bool = True) -> nx.Graph:
+    """
+    Given a graph and a node attirbute name, this function generates an aggregate graph where the nodes are
+    the unique values of the attribute and the edges are the connections between the nodes reflect the connections
+    between original nodes with different attribute values in the original graph.
+
+    Args:
+        graph (nx.Graph): A NetworkX graph.
+        attribute_name (str): The attribute to use for aggregation.
+        directed (bool, optional): Whether the returned aggregate graph should be directed. Defaults to True.
+
+    Returns:
+        nx.Graph: The aggregate graph.
+
+    Note:
+        The edges of the aggregate graph are unweighted.
+    """
+    # Initialise the aggregate graph.
+    aggregate_graph = nx.DiGraph()
+
+    # Create super-nodes based on attribute values and count cluster sizes.
+    node_to_supernode = {}
+    cluster_sizes = defaultdict(int)
+
+    for node in graph.nodes:
+        attribute_value = graph.nodes[node][attribute_name]
+        if attribute_value not in aggregate_graph.nodes:
+            aggregate_graph.add_node(attribute_value, cluster_size=0)
+        node_to_supernode[node] = attribute_value
+        cluster_sizes[attribute_value] += 1
+
+    # Update cluster sizes in the aggregate graph.
+    for supernode, size in cluster_sizes.items():
+        aggregate_graph.nodes[supernode]["cluster_size"] = size
+
+    # Add directed edges between super-nodes based on the original graph.
+    for u, v in graph.edges():
+        super_u = node_to_supernode[u]
+        super_v = node_to_supernode[v]
+        if super_u != super_v:  # Avoid self-loops.
+            aggregate_graph.add_edge(super_u, super_v)
+
+    if not directed:
+        aggregate_graph = aggregate_graph.to_undirected()
+
+    return aggregate_graph
 
 
 def _nx_name_present(stg):
