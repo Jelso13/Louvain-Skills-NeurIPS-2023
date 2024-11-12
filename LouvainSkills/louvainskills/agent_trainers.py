@@ -193,7 +193,7 @@ def train_multi_level_agent(
             test_length=test_episode_cutoff,
             test_runs=5,
             verbose_logging=False,
-            epoch_eval=False,
+            epoch_eval=True,
             episodic_eval=True,
         )
 
@@ -341,14 +341,14 @@ def train_single_level_agents(
                 test_length=test_episode_cutoff,
                 test_runs=5,
                 verbose_logging=False,
-                epoch_eval=False,
+                epoch_eval=True,
                 episodic_eval=True,
             )
 
             run_id = uuid.uuid1()
 
             # Save training performance.
-            train_dir = results_directory / "Train"
+            train_dir = results_directory / f"Level_{level}" / "Train"
             Path(train_dir).mkdir(parents=True, exist_ok=True)
             with open(f"{train_dir}/{experiment_id}-{run}-{run_id}.json", "w", encoding="utf-8") as f:
                 json.dump(train_results, f, ensure_ascii=False, indent=4)
@@ -360,7 +360,7 @@ def train_single_level_agents(
             #     json.dump(epoch_test_results, f, ensure_ascii=False, indent=4)
 
             # Save epoch-based evaluation performance.
-            episode_test_dir = results_directory / "Test"
+            episode_test_dir = results_directory / f"Level_{level}" / "Test"
             Path(episode_test_dir).mkdir(parents=True, exist_ok=True)
             with open(f"{episode_test_dir}/{experiment_id}-{run}-{run_id}.json", "w", encoding="utf-8") as f:
                 json.dump(episode_test_results, f, ensure_ascii=False, indent=4)
@@ -487,7 +487,7 @@ def train_flat_agent(
             test_length=test_episode_cutoff,
             test_runs=5,
             verbose_logging=False,
-            epoch_eval=False,
+            epoch_eval=True,
             episodic_eval=True,
         )
 
@@ -636,7 +636,7 @@ def train_xu_agent(
             test_length=test_episode_cutoff,
             test_runs=5,
             verbose_logging=False,
-            epoch_eval=False,
+            epoch_eval=True,
             episodic_eval=True,
         )
 
@@ -779,9 +779,14 @@ def train_betweenness_agent(
             test_length=test_episode_cutoff,
             test_runs=5,
             verbose_logging=False,
-            epoch_eval=False,
+            epoch_eval=True,
             episodic_eval=True,
         )
+
+
+        # print(f"{train_results=}")
+        # print(f"{episode_test_results=}")
+        # quit()
 
         run_id = uuid.uuid1()
 
@@ -912,7 +917,7 @@ def train_eigenoptions_agent(
             test_length=test_episode_cutoff,
             test_runs=5,
             verbose_logging=False,
-            epoch_eval=False,
+            epoch_eval=True,
             episodic_eval=True,
         )
 
@@ -1025,7 +1030,7 @@ def train_agent_given_options(
             test_length=test_episode_cutoff,
             test_runs=5,
             verbose_logging=False,
-            epoch_eval=False,
+            epoch_eval=True,
             episodic_eval=True,
         )
 
@@ -1129,7 +1134,7 @@ def train_primitive_agent(
             test_length=test_episode_cutoff,
             test_runs=5,
             verbose_logging=False,
-            epoch_eval=False,
+            epoch_eval=True,
             episodic_eval=True,
         )
 

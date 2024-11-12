@@ -61,7 +61,7 @@ if __name__ == "__main__":
         # Save graph to file.
         output_path = "./Training Results/STGs/"
         Path(output_path).mkdir(parents=True, exist_ok=True)
-        nx.write_gexf(stg, f"{output_path}/{env_name}.gexf", prettyprint=True)
+        # nx.write_gexf(stg, f"{output_path}/{env_name}.gexf", prettyprint=True)
 
         # I recommend opening the resulting .gexf files in Gephi for visualisation.
         # For graphs that haven't had a layout applied, you can use the ForceAtlas2

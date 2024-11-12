@@ -62,6 +62,6 @@ if __name__ == "__main__":
     # Save the STG files.
     Path(RESULTS_DIR).mkdir(parents=True, exist_ok=True)  # Testing performance.
     for i, stg in enumerate(stgs):
-        nx.write_gexf(stg, f"{RESULTS_DIR}/Office STG - {num_floors_list[i]} Floors.gexf")
+        # nx.write_gexf(stg, f"{RESULTS_DIR}/Office STG - {num_floors_list[i]} Floors.gexf")
 
         print(f"Saved Office STG with {len(stg.nodes)} states and {num_floors_list[i]} floors.")
